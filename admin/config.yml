@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: diallosadou750/fraternite-fm
+  repo: diallosadou750/fraternite-fm-2026
   branch: main
   base_url: https://sveltia-cms-auth.netlify.app
 
@@ -242,7 +242,7 @@ collections:
           - label: "URL complète du site (pour le SEO)"
             name: "site_url"
             widget: "string"
-            default: "https://VOTRE-SITE.netlify.app"
+            default: "https://69bad273c53c18c000e937c9--unrivaled-praline-c7b294.netlify.app"
             hint: "Ex: https://fraternitefm.netlify.app — utilisé pour le sitemap et schema.org"
 
           - label: "━━ FOOTER"
