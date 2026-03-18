@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /_data/
+
+# Sitemap
+Sitemap: https://69bad273c53c18c000e937c9--unrivaled-praline-c7b294.netlify.app/sitemap.xml

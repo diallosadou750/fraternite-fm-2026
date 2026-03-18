@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — Fraternité FM Mamou</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0b0e;--bg2:#111318;--bg3:#181b22;
+      --border:#242830;--amber:#e8a020;--amber2:#f5c842;
+      --red:#e03030;--green:#22c55e;--text:#e8e4dc;--muted:#7a7870;
+      --font:'DM Sans',sans-serif;--disp:'Bebas Neue',sans-serif;
+      --r:10px;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+    a{color:var(--amber);text-decoration:none}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-thumb{background:var(--amber);border-radius:3px}
+
+    /* ── LOGIN SCREEN ── */
+    #loginScreen{
+      position:fixed;inset:0;z-index:9999;
+      background:var(--bg);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .login-box{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:16px;padding:3rem 2.5rem;
+      width:100%;max-width:400px;text-align:center;
+      box-shadow:0 24px 80px rgba(0,0,0,0.6),0 0 40px rgba(232,160,32,0.08);
+    }
+    .login-icon{font-size:2.5rem;margin-bottom:1rem}
+    .login-box h1{font-family:var(--disp);font-size:2rem;color:var(--amber);letter-spacing:2px;margin-bottom:.25rem}
+    .login-box p{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+    .login-box input{
+      width:100%;background:var(--bg3);border:1px solid var(--border);
+      border-radius:var(--r);color:var(--text);font-family:var(--font);
+      font-size:1rem;padding:.85rem 1rem;outline:none;margin-bottom:1rem;
+      text-align:center;letter-spacing:4px;
+      transition:border-color .2s;
+    }
+    .login-box input:focus{border-color:var(--amber)}
+    .btn-login{
+      width:100%;padding:.85rem;background:var(--amber);border:none;
+      border-radius:var(--r);color:var(--bg);font-weight:700;
+      font-family:var(--font);font-size:1rem;cursor:pointer;
+      transition:background .2s,transform .15s;
+    }
+    .btn-login:hover{background:var(--amber2);transform:scale(1.02)}
+    .login-err{
+      margin-top:1rem;color:var(--red);font-size:.82rem;
+      display:none;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    #adminApp{display:none}
+    .topbar{
+      position:sticky;top:0;z-index:100;
+      background:rgba(10,11,14,.95);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      padding:.75rem 2rem;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .topbar-left{display:flex;align-items:center;gap:.75rem}
+    .topbar-logo{font-family:var(--disp);font-size:1.3rem;color:var(--amber);letter-spacing:2px}
+    .topbar-badge{
+      font-size:.62rem;font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;padding:3px 10px;border-radius:50px;
+      background:rgba(232,160,32,.15);color:var(--amber);
+      border:1px solid rgba(232,160,32,.3);
+    }
+    .btn-logout{
+      background:none;border:1px solid var(--border);border-radius:var(--r);
+      color:var(--muted);font-family:var(--font);font-size:.8rem;
+      padding:.4rem 1rem;cursor:pointer;transition:all .2s;
+    }
+    .btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+    /* ── TABS ── */
+    .tabs{
+      display:flex;gap:0;border-bottom:1px solid var(--border);
+      padding:0 2rem;background:var(--bg2);
+    }
+    .tab{
+      padding:.85rem 1.5rem;font-size:.85rem;font-weight:600;
+      letter-spacing:.5px;color:var(--muted);cursor:pointer;
+      border-bottom:2px solid transparent;transition:all .2s;
+      background:none;border-top:none;border-left:none;border-right:none;
+      font-family:var(--font);
+    }
+    .tab:hover{color:var(--text)}
+    .tab.active{color:var(--amber);border-bottom-color:var(--amber)}
+
+    /* ── PANELS ── */
+    .panel{display:none;padding:2rem;max-width:1100px;margin:0 auto}
+    .panel.active{display:block}
+
+    /* ── STATS CARDS ── */
+    .stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+    .stat-card{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:var(--r);padding:1.25rem;
+    }
+    .stat-card .sc-num{font-family:var(--disp);font-size:2.2rem;color:var(--amber);line-height:1}
+    .stat-card .sc-lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+    /* ── FORM ── */
+    .form-section{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:var(--r);padding:2rem;margin-bottom:2rem;
+    }
+    .form-section h2{
+      font-family:var(--disp);font-size:1.5rem;color:var(--amber);
+      letter-spacing:1px;margin-bottom:1.5rem;
+    }
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+    .form-group{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+    .form-group label{font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:var(--r);color:var(--text);font-family:var(--font);
+      font-size:.9rem;padding:.75rem 1rem;outline:none;
+      transition:border-color .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus{border-color:var(--amber)}
+    .form-group select option{background:var(--bg3)}
+    .form-group textarea{resize:vertical;min-height:120px}
+
+    /* ── EMOJI PICKER ── */
+    .emoji-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+    .emoji-opt{
+      font-size:1.4rem;cursor:pointer;padding:.3rem;border-radius:6px;
+      border:2px solid transparent;transition:all .2s;
+      background:var(--bg3);
+    }
+    .emoji-opt:hover,.emoji-opt.selected{border-color:var(--amber);background:rgba(232,160,32,.1)}
+
+    /* ── AI ASSISTANT ── */
+    .ai-box{
+      background:rgba(232,160,32,.05);
+      border:1px solid rgba(232,160,32,.2);
+      border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;
+    }
+    .ai-box-header{
+      display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;
+    }
+    .ai-badge{
+      font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+      padding:3px 10px;border-radius:50px;
+      background:rgba(232,160,32,.15);color:var(--amber);
+      border:1px solid rgba(232,160,32,.3);
+    }
+    .ai-box-header p{font-size:.82rem;color:var(--muted)}
+    .ai-prompt-row{display:flex;gap:.75rem}
+    .ai-prompt-row input{
+      flex:1;background:var(--bg3);border:1px solid var(--border);
+      border-radius:var(--r);color:var(--text);font-family:var(--font);
+      font-size:.9rem;padding:.7rem 1rem;outline:none;
+      transition:border-color .2s;
+    }
+    .ai-prompt-row input:focus{border-color:var(--amber)}
+    .btn-ai{
+      padding:.7rem 1.4rem;background:var(--amber);border:none;
+      border-radius:var(--r);color:var(--bg);font-weight:700;
+      font-family:var(--font);font-size:.85rem;cursor:pointer;
+      white-space:nowrap;transition:background .2s,transform .15s;
+      display:flex;align-items:center;gap:.5rem;
+    }
+    .btn-ai:hover{background:var(--amber2);transform:scale(1.02)}
+    .btn-ai:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .ai-spinner{
+      width:14px;height:14px;border:2px solid var(--bg);
+      border-top-color:transparent;border-radius:50%;
+      animation:spin .6s linear infinite;display:none;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── ACTION BUTTONS ── */
+    .btn-row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+    .btn-primary{
+      padding:.75rem 2rem;background:var(--amber);border:none;
+      border-radius:var(--r);color:var(--bg);font-weight:700;
+      font-family:var(--font);font-size:.9rem;cursor:pointer;
+      transition:background .2s,transform .15s;
+    }
+    .btn-primary:hover{background:var(--amber2);transform:scale(1.02)}
+    .btn-secondary{
+      padding:.75rem 1.5rem;background:none;
+      border:1px solid var(--border);
+      border-radius:var(--r);color:var(--muted);
+      font-family:var(--font);font-size:.9rem;cursor:pointer;
+      transition:all .2s;
+    }
+    .btn-secondary:hover{border-color:var(--amber);color:var(--amber)}
+    .btn-danger{
+      padding:.6rem 1.2rem;background:rgba(224,48,48,.1);
+      border:1px solid rgba(224,48,48,.3);
+      border-radius:var(--r);color:var(--red);
+      font-family:var(--font);font-size:.82rem;cursor:pointer;
+      transition:all .2s;
+    }
+    .btn-danger:hover{background:rgba(224,48,48,.2)}
+    .btn-sm{
+      padding:.45rem 1rem;background:rgba(232,160,32,.1);
+      border:1px solid rgba(232,160,32,.3);
+      border-radius:8px;color:var(--amber);
+      font-family:var(--font);font-size:.78rem;font-weight:600;cursor:pointer;
+      transition:all .2s;
+    }
+    .btn-sm:hover{background:rgba(232,160,32,.2)}
+
+    /* ── SUCCESS / ERROR TOASTS ── */
+    .toast{
+      position:fixed;bottom:2rem;right:2rem;z-index:9999;
+      padding:1rem 1.5rem;border-radius:var(--r);
+      font-size:.88rem;font-weight:500;
+      display:none;animation:slideIn .3s ease;
+      max-width:320px;
+    }
+    .toast.success{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--green)}
+    .toast.error{background:rgba(224,48,48,.15);border:1px solid rgba(224,48,48,.4);color:var(--red)}
+    @keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+
+    /* ── ARTICLES LIST ── */
+    .article-list{display:flex;flex-direction:column;gap:1rem}
+    .article-item{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:var(--r);padding:1.25rem;
+      display:flex;gap:1.25rem;align-items:flex-start;
+      transition:border-color .2s;
+    }
+    .article-item:hover{border-color:rgba(232,160,32,.3)}
+    .article-emoji{font-size:2rem;flex-shrink:0;padding-top:2px}
+    .article-meta{flex:1}
+    .article-cat{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+    .article-title{font-weight:700;color:var(--text);margin-bottom:6px;font-size:.95rem}
+    .article-excerpt{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:8px}
+    .article-footer{display:flex;align-items:center;gap:1rem}
+    .article-date{font-size:.72rem;color:var(--border)}
+    .article-actions{display:flex;gap:.5rem;margin-left:auto}
+
+    /* ── EMPTY STATE ── */
+    .empty-state{
+      text-align:center;padding:4rem 2rem;
+      color:var(--muted);
+    }
+    .empty-state .empty-icon{font-size:3rem;margin-bottom:1rem}
+    .empty-state p{font-size:.9rem}
+
+    /* ── PREVIEW ── */
+    .preview-card{
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:var(--r);padding:1.25rem;margin-top:1rem;
+      display:none;
+    }
+    .preview-card.show{display:block}
+    .preview-card .prev-cat{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+    .preview-card .prev-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px}
+    .preview-card .prev-excerpt{font-size:.83rem;color:var(--muted);line-height:1.5}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:600px){
+      .form-row{grid-template-columns:1fr}
+      .panel{padding:1.25rem}
+      .topbar{padding:.75rem 1.25rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <h1>ESPACE ADMIN</h1>
+    <p>Fraternité FM Mamou — Accès réservé</p>
+    <input type="password" id="pwdInput" placeholder="Mot de passe" autocomplete="current-password"/>
+    <button class="btn-login" onclick="doLogin()">Connexion</button>
+    <div class="login-err" id="loginErr">❌ Mot de passe incorrect</div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN APP ══════════════ -->
+<div id="adminApp">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span style="font-size:1.3rem">📻</span>
+      <span class="topbar-logo">FRATERNITÉ FM</span>
+      <span class="topbar-badge">ADMIN</span>
+    </div>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <a href="index.html" target="_blank" style="font-size:.8rem;color:var(--muted)">← Voir le site</a> <a href="guide.html" target="_blank" style="font-size:.8rem;color:var(--muted)">📖 Guide</a>
+      <button class="btn-logout" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('dashboard')">📊 Tableau de bord</button>
+    <button class="tab" onclick="showTab('new')">✏️ Nouvel article</button>
+    <button class="tab" onclick="showTab('articles')">📰 Mes articles</button>
+    <button class="tab" onclick="showTab('export')">📤 Exporter</button>
+  </div>
+
+  <!-- ── PANEL: DASHBOARD ── -->
+  <div class="panel active" id="panel-dashboard">
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="form-section">
+      <h2>Derniers articles publiés</h2>
+      <div id="dashRecent"></div>
+    </div>
+
+    <div class="form-section" style="border-color:rgba(232,160,32,.2)">
+      <h2>Conseils de publication</h2>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:.75rem">
+        <li style="font-size:.88rem;color:var(--muted);padding:.75rem;background:var(--bg3);border-radius:8px">💡 <strong style="color:var(--text)">2 articles/jour minimum</strong> pour maintenir l'engagement de votre audience</li>
+        <li style="font-size:.88rem;color:var(--muted);padding:.75rem;background:var(--bg3);border-radius:8px">🎯 <strong style="color:var(--text)">Priorisez l'actualité locale</strong> : Mamou, Dalaba, Pita, Labé — ce que les autres ne couvrent pas</li>
+        <li style="font-size:.88rem;color:var(--muted);padding:.75rem;background:var(--bg3);border-radius:8px">📱 <strong style="color:var(--text)">Partagez chaque article</strong> dans le groupe WhatsApp et sur la page Facebook dès la publication</li>
+        <li style="font-size:.88rem;color:var(--muted);padding:.75rem;background:var(--bg3);border-radius:8px">✨ <strong style="color:var(--text)">Utilisez l'assistant IA</strong> pour rédiger l'article en 30 secondes à partir d'un titre ou d'une idée</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── PANEL: NOUVEL ARTICLE ── -->
+  <div class="panel" id="panel-new">
+    <div class="form-section">
+      <h2>✏️ Nouvel article</h2>
+
+      <!-- AI ASSISTANT -->
+      <div class="ai-box">
+        <div class="ai-box-header">
+          <span class="ai-badge">✨ Assistant IA</span>
+          <p>Décrivez votre sujet en une phrase et l'IA rédige l'article complet automatiquement</p>
+        </div>
+        <div class="ai-prompt-row">
+          <input type="text" id="aiPrompt" placeholder="Ex: Réunion des chefs de villages à Mamou sur l'eau potable…"/>
+          <button class="btn-ai" id="btnAI" onclick="generateArticle()">
+            <div class="ai-spinner" id="aiSpinner"></div>
+            <span id="aiLabel">Générer ✨</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select id="fCat">
+            <option>Actualités</option>
+            <option>Politique</option>
+            <option>Économie</option>
+            <option>Culture</option>
+            <option>Sport</option>
+            <option>Santé</option>
+            <option>Éducation</option>
+            <option>Agriculture</option>
+            <option>Société</option>
+            <option>International</option>
+            <option>Communauté</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date de publication</label>
+          <input type="date" id="fDate"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Titre de l'article *</label>
+        <input type="text" id="fTitle" placeholder="Ex: Nouvelle route bitumée entre Mamou et Dalaba annoncée" oninput="updatePreview()"/>
+      </div>
+
+      <div class="form-group">
+        <label>Résumé (affiché sur la page d'accueil) *</label>
+        <textarea id="fExcerpt" placeholder="2-3 phrases qui résument l'article…" oninput="updatePreview()"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Choisissez une icône</label>
+        <div class="emoji-row" id="emojiPicker">
+          <!-- generated by JS -->
+        </div>
+        <input type="hidden" id="fEmoji" value="📰"/>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="preview-card" id="previewCard">
+        <div class="prev-cat" id="prevCat"></div>
+        <div class="prev-title" id="prevTitle"></div>
+        <div class="prev-excerpt" id="prevExcerpt"></div>
+      </div>
+
+      <div class="btn-row" style="margin-top:1.5rem">
+        <button class="btn-primary" onclick="saveArticle()">💾 Publier l'article</button>
+        <button class="btn-secondary" onclick="clearForm()">Effacer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: MES ARTICLES ── -->
+  <div class="panel" id="panel-articles">
+    <div class="form-section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h2 style="margin-bottom:0">📰 Articles publiés</h2>
+        <span id="articlesCount" style="font-size:.8rem;color:var(--muted)"></span>
+      </div>
+      <div id="articlesList"></div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: EXPORT ── -->
+  <div class="panel" id="panel-export">
+    <div class="form-section">
+      <h2>📤 Exporter vers le site</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem">
+        Copiez ce code et remplacez le tableau <code style="color:var(--amber)">const news = [...]</code> dans le fichier <strong>js/app.js</strong> sur votre hébergement Netlify (via GitHub ou l'éditeur Netlify).
+      </p>
+      <div style="display:flex;gap:.75rem;margin-bottom:1rem">
+        <button class="btn-primary" onclick="copyCode()">📋 Copier le code</button>
+        <button class="btn-secondary" onclick="downloadCode()">⬇️ Télécharger app.js</button>
+      </div>
+      <textarea id="exportCode" readonly
+        style="width:100%;min-height:320px;background:var(--bg3);border:1px solid var(--border);
+               border-radius:var(--r);color:#7dd3fc;font-family:'Courier New',monospace;
+               font-size:.78rem;padding:1rem;outline:none;resize:vertical">
+      </textarea>
+    </div>
+
+    <div class="form-section" style="border-color:rgba(34,197,94,.2)">
+      <h2 style="color:var(--green)">📖 Comment publier en 3 étapes</h2>
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-top:.5rem">
+        <div style="display:flex;gap:1rem;align-items:flex-start;padding:.75rem;background:var(--bg3);border-radius:8px">
+          <span style="font-family:var(--disp);font-size:1.5rem;color:var(--green);min-width:30px">1</span>
+          <div>
+            <div style="font-weight:600;margin-bottom:3px">Écrire ici dans l'admin</div>
+            <div style="font-size:.83rem;color:var(--muted)">Rédigez vos articles dans cet espace. L'IA vous aide à rédiger en 30 secondes.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start;padding:.75rem;background:var(--bg3);border-radius:8px">
+          <span style="font-family:var(--disp);font-size:1.5rem;color:var(--green);min-width:30px">2</span>
+          <div>
+            <div style="font-weight:600;margin-bottom:3px">Copier le code exporté</div>
+            <div style="font-size:.83rem;color:var(--muted)">Cliquez "Copier le code" ci-dessus. C'est le code complet du tableau d'articles mis à jour.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start;padding:.75rem;background:var(--bg3);border-radius:8px">
+          <span style="font-family:var(--disp);font-size:1.5rem;color:var(--green);min-width:30px">3</span>
+          <div>
+            <div style="font-weight:600;margin-bottom:3px">Coller dans Netlify</div>
+            <div style="font-size:.83rem;color:var(--muted)">Dans Netlify → <strong>Sites → votre site → Functions & Assets → js/app.js</strong> → éditez → collez → sauvegardez. Site mis à jour en 30 secondes ✅</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /adminApp -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIGURATION
+// ══════════════════════════════════════════
+const ADMIN_PASSWORD = 'FraterniteFM2026'; // ⚠️ Changez ce mot de passe !
+const STORAGE_KEY = 'ffm_articles';
+
+// Emojis disponibles pour les articles
+const EMOJIS = ['📰','🎵','⚽','💉','🏫','📈','🌍','🏛️','🎭','🌱','💧','🔥','🤝','🎓','🏗️','🚗','✈️','⚡','🌿','👥','🎤','📡','🏆','🌊','🎉'];
+
+// ── Articles par défaut (ceux du site) ──
+const DEFAULT_ARTICLES = [
+  { id:'d1', cat:'Économie',   title:'Le marché de Mamou en plein essor : nouveaux investissements attendus',     excerpt:'La ville de Mamou attire de nouveaux investisseurs grâce à sa position stratégique au carrefour de la Moyenne Guinée.', date:'15 mars 2026', emoji:'📈' },
+  { id:'d2', cat:'Culture',    title:'Festival de musique Pular : édition 2026 annoncée à Labé',                   excerpt:'Le grand festival de la culture Peul revient cette année avec plus de 50 artistes de la sous-région.',               date:'13 mars 2026', emoji:'🎵' },
+  { id:'d3', cat:'Santé',      title:'Campagne de vaccination : plus de 10.000 enfants vaccinés en Moyenne Guinée',excerpt:'Le ministère de la Santé et ses partenaires ont atteint un taux de couverture record dans les préfectures.',           date:'10 mars 2026', emoji:'💉' },
+  { id:'d4', cat:'Agriculture',title:'Bonne récolte de pommes de terre à Dalaba cette saison',                     excerpt:'Les agriculteurs de Dalaba annoncent une production record, renforçant l\'autosuffisance alimentaire de la région.',   date:'8 mars 2026',  emoji:'🥔' },
+  { id:'d5', cat:'Éducation',  title:'Ouverture d\'un nouveau lycée technique à Mamou',                            excerpt:'Le gouvernement guinéen inaugure un lycée technique moderne pour former les jeunes aux métiers de demain.',            date:'5 mars 2026',  emoji:'🏫' },
+  { id:'d6', cat:'Sport',      title:'Tournoi de football interrégional : Mamou en finale',                        excerpt:'L\'équipe de football de Mamou a brillamment remporté sa demi-finale et se qualifie pour la grande finale régionale.', date:'2 mars 2026',  emoji:'⚽' },
+];
+
+// ══════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════
+function doLogin() {
+  const pwd = document.getElementById('pwdInput').value;
+  if (pwd === ADMIN_PASSWORD) {
+    sessionStorage.setItem('ffm_auth', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('pwdInput').value = '';
+  }
+}
+document.getElementById('pwdInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+function doLogout() {
+  sessionStorage.removeItem('ffm_auth');
+  location.reload();
+}
+// Auto-login if session exists
+if (sessionStorage.getItem('ffm_auth') === '1') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminApp').style.display = 'block';
+}
+
+// ══════════════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════════════
+function getArticles() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function saveArticles(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+function getAllArticles() {
+  return [...getArticles(), ...DEFAULT_ARTICLES];
+}
+
+// ══════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'articles') renderArticlesList();
+  if (name === 'export')   renderExport();
+  if (name === 'dashboard') renderDashboard();
+}
+
+// ══════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════
+function renderDashboard() {
+  const all = getAllArticles();
+  const mine = getArticles();
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card"><div class="sc-num">${all.length}</div><div class="sc-lbl">Articles total</div></div>
+    <div class="stat-card"><div class="sc-num">${mine.length}</div><div class="sc-lbl">Mes publications</div></div>
+    <div class="stat-card"><div class="sc-num">${[...new Set(all.map(a=>a.cat))].length}</div><div class="sc-lbl">Catégories</div></div>
+    <div class="stat-card"><div class="sc-num">📻</div><div class="sc-lbl">Radio active</div></div>
+  `;
+  const recent = all.slice(0, 4);
+  document.getElementById('dashRecent').innerHTML = recent.length
+    ? recent.map(a => `
+        <div style="display:flex;gap:1rem;align-items:center;padding:.85rem;background:var(--bg3);border-radius:8px;margin-bottom:.75rem">
+          <span style="font-size:1.5rem">${a.emoji}</span>
+          <div>
+            <div style="font-weight:600;font-size:.88rem;color:var(--text)">${a.title}</div>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:2px">${a.cat} · ${a.date}</div>
+          </div>
+        </div>`).join('')
+    : '<div style="color:var(--muted);font-size:.88rem">Aucun article encore. Créez votre premier article !</div>';
+}
+
+// ══════════════════════════════════════════
+//  EMOJI PICKER
+// ══════════════════════════════════════════
+function buildEmojiPicker() {
+  document.getElementById('emojiPicker').innerHTML = EMOJIS.map(e =>
+    `<span class="emoji-opt ${e==='📰'?'selected':''}" onclick="selectEmoji('${e}')">${e}</span>`
+  ).join('');
+}
+function selectEmoji(e) {
+  document.querySelectorAll('.emoji-opt').forEach(el => el.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('fEmoji').value = e;
+  updatePreview();
+}
+
+// ══════════════════════════════════════════
+//  PREVIEW
+// ══════════════════════════════════════════
+function updatePreview() {
+  const title   = document.getElementById('fTitle').value.trim();
+  const excerpt = document.getElementById('fExcerpt').value.trim();
+  const cat     = document.getElementById('fCat').value;
+  const card    = document.getElementById('previewCard');
+  if (title || excerpt) {
+    card.classList.add('show');
+    document.getElementById('prevCat').textContent    = cat;
+    document.getElementById('prevTitle').textContent  = title || '…';
+    document.getElementById('prevExcerpt').textContent= excerpt || '…';
+  } else {
+    card.classList.remove('show');
+  }
+}
+
+// ══════════════════════════════════════════
+//  AI ARTICLE GENERATOR
+// ══════════════════════════════════════════
+async function generateArticle() {
+  const prompt = document.getElementById('aiPrompt').value.trim();
+  if (!prompt) { showToast('Décrivez d\'abord le sujet en une phrase', 'error'); return; }
+  const btn = document.getElementById('btnAI');
+  const spinner = document.getElementById('aiSpinner');
+  const label = document.getElementById('aiLabel');
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  label.textContent = 'Rédaction…';
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Tu es le rédacteur en chef de Radio Fraternité FM Mamou, une radio communautaire de Moyenne Guinée. 
+Tu rédiges des articles courts et percutants pour le site web de la radio.
+Réponds UNIQUEMENT en JSON valide (sans markdown, sans backticks), format exact :
+{"cat":"catégorie","title":"titre accrocheur","excerpt":"2-3 phrases résumé percutant"}
+Catégories possibles : Actualités, Politique, Économie, Culture, Sport, Santé, Éducation, Agriculture, Société, Communauté.
+Le style doit être professionnel mais accessible, adapté au public guinéen.`,
+        messages: [{ role: 'user', content: `Rédige un article de presse sur ce sujet : ${prompt}` }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    if (parsed.title)   document.getElementById('fTitle').value   = parsed.title;
+    if (parsed.excerpt) document.getElementById('fExcerpt').value = parsed.excerpt;
+    if (parsed.cat) {
+      const sel = document.getElementById('fCat');
+      for (let opt of sel.options) { if (opt.value === parsed.cat) { sel.value = parsed.cat; break; } }
+    }
+    updatePreview();
+    showToast('✨ Article généré avec succès !', 'success');
+  } catch(err) {
+    console.error(err);
+    showToast('Erreur IA — Vérifiez votre connexion', 'error');
+  } finally {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    label.textContent = 'Générer ✨';
+  }
+}
+
+// ══════════════════════════════════════════
+//  SAVE ARTICLE
+// ══════════════════════════════════════════
+function saveArticle() {
+  const title   = document.getElementById('fTitle').value.trim();
+  const excerpt = document.getElementById('fExcerpt').value.trim();
+  if (!title || !excerpt) { showToast('Titre et résumé requis', 'error'); return; }
+
+  const articles = getArticles();
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+  articles.unshift({
+    id: 'a' + Date.now(),
+    cat:    document.getElementById('fCat').value,
+    title,
+    excerpt,
+    date:   document.getElementById('fDate').value
+           ? new Date(document.getElementById('fDate').value).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' })
+           : dateStr,
+    emoji:  document.getElementById('fEmoji').value
+  });
+  saveArticles(articles);
+  clearForm();
+  showToast('✅ Article publié avec succès !', 'success');
+  renderDashboard();
+}
+
+function clearForm() {
+  ['fTitle','fExcerpt','aiPrompt'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fDate').value = '';
+  document.getElementById('fEmoji').value = '📰';
+  document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+  document.querySelector('.emoji-opt')?.classList.add('selected');
+  document.getElementById('previewCard').classList.remove('show');
+}
+
+// ══════════════════════════════════════════
+//  ARTICLES LIST
+// ══════════════════════════════════════════
+function renderArticlesList() {
+  const mine = getArticles();
+  document.getElementById('articlesCount').textContent = `${mine.length} article(s) publié(s) par vous`;
+  const container = document.getElementById('articlesList');
+  if (!mine.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📝</div><p>Aucun article publié pour l'instant.<br/>Créez votre premier article !</p></div>`;
+    return;
+  }
+  container.innerHTML = `<div class="article-list">${mine.map(a => `
+    <div class="article-item" id="item-${a.id}">
+      <div class="article-emoji">${a.emoji}</div>
+      <div class="article-meta">
+        <div class="article-cat">${a.cat}</div>
+        <div class="article-title">${a.title}</div>
+        <div class="article-excerpt">${a.excerpt}</div>
+        <div class="article-footer">
+          <span class="article-date">${a.date}</span>
+          <div class="article-actions">
+            <button class="btn-sm" onclick="editArticle('${a.id}')">✏️ Modifier</button>
+            <button class="btn-danger" onclick="deleteArticle('${a.id}')">🗑 Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function deleteArticle(id) {
+  if (!confirm('Supprimer cet article ?')) return;
+  saveArticles(getArticles().filter(a => a.id !== id));
+  renderArticlesList();
+  renderDashboard();
+  showToast('Article supprimé', 'success');
+}
+
+function editArticle(id) {
+  const a = getArticles().find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('fTitle').value   = a.title;
+  document.getElementById('fExcerpt').value = a.excerpt;
+  document.getElementById('fCat').value     = a.cat;
+  document.getElementById('fEmoji').value   = a.emoji;
+  document.querySelectorAll('.emoji-opt').forEach(e => {
+    e.classList.toggle('selected', e.textContent === a.emoji);
+  });
+  deleteArticle(id);
+  showTab({ target: document.querySelectorAll('.tab')[1] }, 'new');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab')[1].classList.add('active');
+  document.getElementById('panel-new').classList.add('active');
+  updatePreview();
+}
+
+// ══════════════════════════════════════════
+//  EXPORT
+// ══════════════════════════════════════════
+function buildExportCode() {
+  const all = getAllArticles();
+  const items = all.map(a =>
+    `  { cat: "${a.cat}", title: "${a.title.replace(/"/g,'\\"')}", excerpt: "${a.excerpt.replace(/"/g,'\\"')}", date: "${a.date}", emoji: "${a.emoji}" }`
+  ).join(',\n');
+  return `const news = [\n${items}\n];`;
+}
+
+function renderExport() {
+  document.getElementById('exportCode').value = buildExportCode();
+}
+
+function copyCode() {
+  const ta = document.getElementById('exportCode');
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => {
+    showToast('✅ Code copié ! Collez-le dans js/app.js', 'success');
+  }).catch(() => {
+    document.execCommand('copy');
+    showToast('✅ Code copié !', 'success');
+  });
+}
+
+function downloadCode() {
+  // Reads full app.js via fetch and injects updated news array
+  const code = buildExportCode();
+  const blob = new Blob([`// ======= NEWS ARRAY — FRATERNITÉ FM MAMOU =======\n// Copiez uniquement cette section dans js/app.js\n// =================================================\n\n${code}\n`], { type: 'text/javascript' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'news-update.js';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type}`;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3500);
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+function init() {
+  // Set today's date as default
+  document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+  buildEmojiPicker();
+  renderDashboard();
+}
+
+// Auto-init if already logged in
+if (sessionStorage.getItem('ffm_auth') === '1') init();
+</script>
+</body>
+</html>

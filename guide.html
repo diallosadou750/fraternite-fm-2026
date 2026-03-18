@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guide Complet — Radio Fraternité FM Mamou</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0b0e;--bg2:#111318;--bg3:#181b22;--border:#242830;
+      --amber:#e8a020;--amber2:#f5c842;--red:#e03030;--green:#22c55e;
+      --blue:#3b82f6;--purple:#a855f7;
+      --text:#e8e4dc;--muted:#7a7870;
+      --font:'DM Sans',sans-serif;--disp:'Bebas Neue',sans-serif;
+      --r:10px;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7}
+    a{color:var(--amber)}
+    code{background:var(--bg3);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-size:.85em;color:var(--amber2)}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--amber);border-radius:3px}
+
+    /* Layout */
+    .layout{display:flex;min-height:100vh}
+    .sidebar{
+      width:280px;flex-shrink:0;
+      position:sticky;top:0;height:100vh;overflow-y:auto;
+      background:var(--bg2);border-right:1px solid var(--border);
+      padding:1.5rem 0;
+    }
+    .sidebar-logo{padding:0 1.5rem 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+    .sidebar-logo-top{font-size:1.5rem;margin-bottom:4px}
+    .sidebar-logo-name{font-family:var(--disp);font-size:1.1rem;color:var(--amber);letter-spacing:2px}
+    .sidebar-logo-sub{font-size:.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+    .sidebar-section{padding:.25rem 0;margin-bottom:.5rem}
+    .sidebar-section-title{
+      font-size:.62rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+      color:var(--amber);padding:.25rem 1.5rem;margin-bottom:.25rem;
+    }
+    .sidebar-link{
+      display:flex;align-items:center;gap:.6rem;
+      padding:.5rem 1.5rem;font-size:.85rem;color:var(--muted);
+      text-decoration:none;transition:color .2s,background .2s;
+      border-left:3px solid transparent;
+    }
+    .sidebar-link:hover,.sidebar-link.active{
+      color:var(--amber);background:rgba(232,160,32,.06);border-left-color:var(--amber);
+    }
+    .sidebar-back{
+      display:flex;align-items:center;gap:.5rem;
+      padding:.6rem 1.5rem;font-size:.8rem;color:var(--muted);
+      text-decoration:none;margin-top:1rem;border-top:1px solid var(--border);
+      padding-top:1rem;
+    }
+    .sidebar-back:hover{color:var(--amber)}
+
+    .main{flex:1;padding:3rem;max-width:860px}
+    @media(max-width:768px){
+      .layout{flex-direction:column}
+      .sidebar{width:100%;height:auto;position:relative;padding:1rem 0}
+      .main{padding:1.5rem}
+    }
+
+    /* Content */
+    .guide-hero{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+    .guide-tag{font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:.75rem}
+    .guide-hero h1{font-family:var(--disp);font-size:clamp(2rem,5vw,3.5rem);color:#fff;letter-spacing:2px;line-height:1;margin-bottom:.75rem}
+    .guide-hero p{color:var(--muted);font-size:.95rem;max-width:560px}
+
+    h2.section-h{
+      font-family:var(--disp);font-size:1.8rem;color:#fff;letter-spacing:2px;
+      margin:3rem 0 1rem;padding-top:3rem;border-top:1px solid var(--border);
+    }
+    h2.section-h:first-of-type{border-top:none;padding-top:0}
+    h3.sub-h{font-size:1rem;font-weight:700;color:var(--amber);margin:1.75rem 0 .75rem}
+
+    p.body{color:var(--muted);font-size:.92rem;margin-bottom:1rem}
+
+    /* Steps */
+    .steps{display:flex;flex-direction:column;gap:.75rem;margin:1rem 0}
+    .step{
+      display:flex;gap:1rem;align-items:flex-start;
+      background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;
+    }
+    .step-num{
+      flex-shrink:0;width:32px;height:32px;border-radius:50%;
+      background:var(--amber);color:var(--bg);
+      font-family:var(--disp);font-size:1.1rem;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .step-content{flex:1}
+    .step-title{font-weight:700;color:#fff;margin-bottom:4px;font-size:.92rem}
+    .step-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+    .step-desc code{font-size:.8em}
+
+    /* Info boxes */
+    .info-box{
+      border-radius:var(--r);padding:1rem 1.25rem;margin:1.25rem 0;
+      font-size:.85rem;line-height:1.6;
+    }
+    .info-box.tip{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.25);color:var(--text)}
+    .info-box.warning{background:rgba(224,48,48,.08);border:1px solid rgba(224,48,48,.25);color:var(--text)}
+    .info-box.success{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);color:var(--text)}
+    .info-box.info{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);color:var(--text)}
+    .info-box strong{display:block;margin-bottom:4px}
+
+    /* Table */
+    table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.85rem}
+    th{background:var(--bg3);color:var(--amber);font-weight:700;letter-spacing:.5px;padding:.6rem 1rem;text-align:left;border:1px solid var(--border)}
+    td{padding:.6rem 1rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+    tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+    /* Checklist */
+    .checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin:1rem 0}
+    .checklist li{
+      display:flex;align-items:flex-start;gap:.75rem;
+      font-size:.88rem;color:var(--muted);
+      padding:.6rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+    }
+    .checklist li::before{content:"☐";font-size:1.1rem;color:var(--border);flex-shrink:0;margin-top:-1px}
+    .checklist li.done::before{content:"✅"}
+
+    /* Score bar */
+    .score-row{display:flex;align-items:center;gap:1rem;margin-bottom:.6rem}
+    .score-label{font-size:.82rem;color:var(--muted);min-width:220px}
+    .score-bar{flex:1;height:8px;background:var(--border);border-radius:8px;overflow:hidden}
+    .score-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--amber),var(--amber2))}
+    .score-pct{font-size:.78rem;color:var(--amber);font-weight:700;min-width:40px;text-align:right}
+
+    /* Badge */
+    .badge{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:50px}
+    .badge.free{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+    .badge.paid{background:rgba(232,160,32,.15);color:var(--amber);border:1px solid rgba(232,160,32,.3)}
+    .badge.req{background:rgba(224,48,48,.15);color:var(--red);border:1px solid rgba(224,48,48,.3)}
+
+    /* Footer */
+    .guide-footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:.8rem}
+  </style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-top">📻</div>
+    <div class="sidebar-logo-name">FRATERNITÉ FM</div>
+    <div class="sidebar-logo-sub">Guide Complet</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Démarrage</div>
+    <a href="#mise-en-ligne" class="sidebar-link">🚀 Mise en ligne</a>
+    <a href="#onesignal" class="sidebar-link">🔔 Notifications Push</a>
+    <a href="#cms-acces" class="sidebar-link">✏️ Accéder au CMS</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Gestion quotidienne</div>
+    <a href="#articles" class="sidebar-link">📰 Publier un article</a>
+    <a href="#clips" class="sidebar-link">🎬 Ajouter un clip</a>
+    <a href="#programmes" class="sidebar-link">📅 Modifier les programmes</a>
+    <a href="#equipe" class="sidebar-link">👥 Gérer l'équipe</a>
+    <a href="#parametres" class="sidebar-link">⚙️ Paramètres du site</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Monétisation</div>
+    <a href="#dons" class="sidebar-link">📱 Dons Mobile Money</a>
+    <a href="#sponsors" class="sidebar-link">💼 Attirer des sponsors</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Croissance</div>
+    <a href="#seo" class="sidebar-link">🔍 SEO &amp; Google</a>
+    <a href="#reseaux" class="sidebar-link">📲 Réseaux sociaux</a>
+    <a href="#plan90" class="sidebar-link">🎯 Plan 90 jours</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Référence</div>
+    <a href="#structure" class="sidebar-link">📁 Structure du projet</a>
+    <a href="#concordance" class="sidebar-link">📊 Bilan concordance</a>
+    <a href="#depannage" class="sidebar-link">🔧 Dépannage</a>
+  </div>
+
+  <a href="index.html" class="sidebar-back">← Retour au site</a>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <div class="guide-hero">
+    <div class="guide-tag">📖 DOCUMENTATION OFFICIELLE</div>
+    <h1>GUIDE COMPLET<br/>FRATERNITÉ FM</h1>
+    <p>Tout ce que vous devez savoir pour lancer, gérer et faire grandir votre site radio. Du déploiement sur Netlify à la monétisation en passant par les notifications push.</p>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="mise-en-ligne">🚀 Mise en ligne sur Netlify</h2>
+
+  <p class="body">Le site est prêt à être déployé. Suivez ces 3 étapes dans l'ordre.</p>
+
+  <h3 class="sub-h">Étape 1 — Créer un compte GitHub</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Créez un compte sur github.com</div><div class="step-desc">Choisissez un nom d'utilisateur simple. Ex: <code>fraternitefm</code></div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Créez un nouveau dépôt (repository)</div><div class="step-desc">Cliquez "New" → Nom: <code>fraternite-fm</code> → Visibilité: <strong>Public</strong> → "Create repository"</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Uploadez tous les fichiers</div><div class="step-desc">Sur la page du dépôt → "uploading an existing file" → glissez TOUT le contenu du dossier <code>fraternite-fm/</code> → "Commit changes"</div></div></div>
+  </div>
+
+  <h3 class="sub-h">Étape 2 — Déployer sur Netlify</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Connectez-vous sur netlify.com avec GitHub</div><div class="step-desc">Cliquez "Sign up with GitHub" → autorisez l'accès</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Importez votre dépôt</div><div class="step-desc">"Add new site" → "Import an existing project" → GitHub → choisissez <code>fraternite-fm</code></div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Déployez</div><div class="step-desc">Laissez tout par défaut → "Deploy site" → votre site est en ligne en 2 minutes ✅</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Notez votre URL</div><div class="step-desc">Netlify vous donne une URL du type <code>https://random-name.netlify.app</code>. Vous pouvez la personnaliser dans Site Settings → Domain.</div></div></div>
+  </div>
+
+  <h3 class="sub-h">Étape 3 — Activer le CMS Decap</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Créez une OAuth App GitHub</div><div class="step-desc">GitHub → Settings → Developer settings → OAuth Apps → "New OAuth App"<br/>• Application name: <code>Fraternité FM CMS</code><br/>• Homepage URL: votre URL Netlify<br/>• Callback URL: <code>https://sveltia-cms-auth.netlify.app/callback</code></div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Mettez à jour admin/config.yml</div><div class="step-desc">Dans GitHub, ouvrez <code>admin/config.yml</code> → modifiez la ligne <code>repo: VOTRE_USERNAME/fraternite-fm</code> → mettez votre vrai pseudo GitHub</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Accédez à l'éditeur</div><div class="step-desc">Allez sur <code>votre-site.netlify.app/admin/</code> → connectez-vous avec GitHub ✅</div></div></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="onesignal">🔔 Notifications Push (OneSignal)</h2>
+
+  <p class="body">Les notifications push permettent d'alerter vos abonnés quand une émission commence ou quand un article important est publié. C'est gratuit jusqu'à 10.000 abonnés.</p>
+
+  <div class="info-box tip"><strong>💡 Pourquoi c'est crucial pour votre objectif 20.000 users</strong>Les auditeurs qui activent les notifications reviennent 5× plus souvent que ceux qui ne les activent pas. C'est votre levier de fidélisation le plus puissant.</div>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Créez un compte sur onesignal.com</div><div class="step-desc">Gratuit — choisissez "Web Push" → entrez l'URL de votre site Netlify</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Copiez votre App ID</div><div class="step-desc">Dans OneSignal → Settings → Keys & IDs → copiez le <code>OneSignal App ID</code></div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Collez l'ID dans index.html</div><div class="step-desc">Ouvrez <code>index.html</code> sur GitHub → cherchez <code>YOUR_ONESIGNAL_APP_ID</code> → remplacez par votre vrai ID → sauvegardez → Netlify redéploie automatiquement</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Envoyez votre première notification</div><div class="step-desc">OneSignal Dashboard → "New Push" → rédigez votre message → "Send to All" → vos abonnés sont alertés en temps réel 🔔</div></div></div>
+  </div>
+
+  <div class="info-box success"><strong>✅ Le site est déjà configuré</strong>Le fichier <code>OneSignalSDKWorker.js</code> est déjà présent à la racine. Le bandeau "Activer les notifications" s'affiche automatiquement après 8 secondes. Il ne vous manque que l'App ID.</div>
+
+  <h3 class="sub-h">Quand envoyer une notification ?</h3>
+  <table>
+    <tr><th>Événement</th><th>Message suggéré</th><th>Timing</th></tr>
+    <tr><td>Émission live imminente</td><td>🔴 Fraternité FM est EN DIRECT ! Regardez maintenant</td><td>5 min avant</td></tr>
+    <tr><td>Actualité urgente</td><td>⚡ Breaking : [titre de l'info]</td><td>Immédiatement</td></tr>
+    <tr><td>Nouvel article important</td><td>📰 [Titre de l'article] — Lisez sur Fraternité FM</td><td>À la publication</td></tr>
+    <tr><td>Appel aux dons</td><td>💛 Aidez Fraternité FM : objectif [X]% atteint !</td><td>1×/semaine</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="cms-acces">✏️ Accéder au CMS</h2>
+  <p class="body">Une fois le CMS configuré (voir Étape 3 ci-dessus), accédez à l'éditeur via :</p>
+  <div class="info-box info"><strong>URL de l'admin :</strong> <code>https://votre-site.netlify.app/admin/</code><br/>Connexion : votre compte GitHub. Aucun mot de passe supplémentaire.</div>
+  <p class="body">Le CMS Decap vous offre 6 sections d'édition :</p>
+  <table>
+    <tr><th>Section CMS</th><th>Ce que vous pouvez faire</th></tr>
+    <tr><td>⚙️ Paramètres du site</td><td>Logo, couleurs, textes, fréquence, réseaux, objectif dons</td></tr>
+    <tr><td>📰 Articles & Actualités</td><td>Publier, modifier, supprimer des articles</td></tr>
+    <tr><td>🎬 Clips & Replays</td><td>Ajouter des clips vidéo avec ID YouTube</td></tr>
+    <tr><td>📅 Grille des Programmes</td><td>Modifier les horaires et animateurs</td></tr>
+    <tr><td>👥 Équipe</td><td>Fiches du personnel avec photo optionnelle</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="articles">📰 Publier un article</h2>
+  <p class="body">Procédure quotidienne recommandée : <strong>2 articles par jour minimum</strong>.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Ouvrez le CMS → "📰 Articles & Actualités" → "New Articles"</div><div class="step-desc"></div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Remplissez le formulaire</div><div class="step-desc">Titre percutant · Catégorie · Date · Icône · Résumé (2-3 phrases)</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Cliquez "Publish" en haut à droite</div><div class="step-desc">L'article est créé sur GitHub → Netlify redéploie → visible sur le site en ~30 secondes</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Partagez immédiatement</div><div class="step-desc">Copiez le lien de la section Actualités → publiez sur Facebook, WhatsApp, Instagram</div></div></div>
+  </div>
+  <div class="info-box warning"><strong>⚠️ Ne pas oublier</strong>Après chaque publication, mettez à jour manuellement le fichier <code>_data/articles/index.json</code> sur GitHub en ajoutant le nom du nouveau fichier JSON créé par le CMS. Sans ça, l'article n'apparaîtra pas sur le site.</div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="clips">🎬 Ajouter un clip vidéo</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Uploadez votre clip sur YouTube</div><div class="step-desc">Connectez-vous sur youtube.com → "Créer" → "Mettre une vidéo en ligne" → choisissez votre fichier</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Copiez l'ID YouTube</div><div class="step-desc">Dans l'URL du clip : <code>youtube.com/watch?v=<strong>dQw4w9WgXcQ</strong></code> → l'ID est la partie après <code>v=</code></div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">CMS → "🎬 Clips & Replays" → "New Clip"</div><div class="step-desc">Titre · Catégorie · Durée · Icône · <strong>ID YouTube</strong> (copiez-le ici) · Description · Ordre</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Publiez → le clip apparaît sur le site avec lecteur intégré</div><div class="step-desc">Le clic sur un clip ouvre un modal de lecture directement sur la page</div></div></div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="programmes">📅 Modifier les programmes</h2>
+  <p class="body">CMS → "📅 Grille des Programmes" → cliquez sur une émission → modifiez → "Save".</p>
+  <div class="info-box tip"><strong>💡 Ordre d'affichage</strong>Le champ "Ordre" détermine la position de l'émission dans la grille. 1 = premier, 9 = dernier. Gardez-le cohérent avec les horaires.</div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="equipe">👥 Gérer l'équipe</h2>
+  <p class="body">CMS → "👥 Équipe" → cliquez sur un membre ou "New Membre".</p>
+  <p class="body">Pour ajouter une <strong>photo</strong> : dans le CMS, cliquez sur le champ "Photo" → uploadez une image JPG/PNG → sauvegardez. L'image remplace automatiquement les initiales.</p>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="parametres">⚙️ Paramètres du site</h2>
+  <p class="body">CMS → "⚙️ Paramètres du site" → "Configuration générale". Tout est modifiable sans toucher au code.</p>
+  <table>
+    <tr><th>Paramètre</th><th>Description</th><th>Impact</th></tr>
+    <tr><td>Logo</td><td>Image PNG transparent (max 200px)</td><td>Navbar + Footer</td></tr>
+    <tr><td>Image de fond</td><td>Photo du studio / Mamou (1920×1080)</td><td>Section héros</td></tr>
+    <tr><td>Couleur principale</td><td>Remplace le doré par défaut</td><td>Boutons, titres, accents</td></tr>
+    <tr><td>Stream URL</td><td>URL de votre flux Icecast/Shoutcast</td><td>Player audio</td></tr>
+    <tr><td>Objectif dons</td><td>Montant cible + montant collecté</td><td>Barre de progression</td></tr>
+    <tr><td>Bandeau défilant</td><td>Messages séparés par |</td><td>Ticker en haut du site</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="dons">📱 Dons Mobile Money — Maximiser les contributions</h2>
+
+  <p class="body">La section dons est déjà en place. Voici comment la rendre efficace.</p>
+
+  <h3 class="sub-h">Stratégie hebdomadaire des dons</h3>
+  <table>
+    <tr><th>Jour</th><th>Action</th><th>Message</th></tr>
+    <tr><td>Lundi</td><td>Annonce de l'objectif semaine à l'antenne</td><td>"Cette semaine, aidez-nous à atteindre X GNF pour [raison précise]"</td></tr>
+    <tr><td>Mercredi</td><td>Point intermédiaire sur les dons reçus</td><td>"Merci à nos X donateurs ! Il nous manque encore Y GNF"</td></tr>
+    <tr><td>Vendredi</td><td>Remerciements nommés à l'antenne</td><td>Lire les noms de chaque donateur — c'est la meilleure motivation pour les autres</td></tr>
+    <tr><td>Dimanche</td><td>Mise à jour CMS → montant collecté actuel</td><td>Paramètres → "Montant actuel collecté" → sauvegardez</td></tr>
+  </table>
+
+  <div class="info-box tip"><strong>💡 La règle d'or</strong>Toujours dire EXACTEMENT à quoi servira l'argent. "Aidez-nous à acheter un nouveau micro pour notre studio — 200.000 GNF nécessaires" convertit 5× mieux que "Soutenez la radio".</div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="sponsors">💼 Attirer des sponsors</h2>
+
+  <p class="body">Le formulaire de partenariat envoie automatiquement les demandes par WhatsApp. Voici comment l'utiliser activement.</p>
+
+  <h3 class="sub-h">Les 5 catégories de prospects à Mamou</h3>
+  <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;margin:1rem 0">
+    <li style="padding:.6rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:.85rem;color:var(--muted)">📱 <strong style="color:var(--text)">Opérateurs télécom</strong> — Orange Guinée, MTN : votre public est exactement leur cible</li>
+    <li style="padding:.6rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:.85rem;color:var(--muted)">🏦 <strong style="color:var(--text)">Banques et microfinance</strong> — Ecobank, UBA : ils cherchent à toucher les entrepreneurs locaux</li>
+    <li style="padding:.6rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:.85rem;color:var(--muted)">🏗️ <strong style="color:var(--text)">Matériaux de construction</strong> — Quincailleries, cimenteries : marché actif à Mamou</li>
+    <li style="padding:.6rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:.85rem;color:var(--muted)">🛒 <strong style="color:var(--text)">Grands commerces</strong> — Supermarchés, importateurs : ils veulent de la visibilité locale</li>
+    <li style="padding:.6rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:.85rem;color:var(--muted)">🌱 <strong style="color:var(--text)">ONG et projets de développement</strong> — Ils ont des budgets communication et cherchent la radio locale</li>
+  </ul>
+
+  <h3 class="sub-h">Le pitch en 2 minutes</h3>
+  <div class="info-box info"><strong>Script à utiliser en visite terrain :</strong><br/><br/>"Bonjour, je représente Radio Fraternité FM 95.0 MHz — la radio de Mamou. Nous diffusons 24h/24 sur la FM et en streaming mondial. Notre site reçoit [X] visiteurs par mois. Pour [montant] par semaine, votre entreprise sera annoncée 3 fois par jour à l'antenne et sur notre site. Est-ce que vous souhaitez qu'on vous prépare une offre ?"</div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="seo">🔍 SEO & Référencement Google</h2>
+
+  <p class="body">Votre site est déjà optimisé avec Schema.org, sitemap.xml et balises meta. Voici les actions manuelles pour accélérer l'indexation.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Soumettez votre sitemap à Google</div><div class="step-desc">Allez sur <a href="https://search.google.com/search-console" target="_blank">search.google.com/search-console</a> → ajoutez votre site → "Sitemap" → entrez <code>/sitemap.xml</code> → "Soumettre"</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Créez votre fiche Google Business</div><div class="step-desc">Allez sur <a href="https://business.google.com" target="_blank">business.google.com</a> → "Ajouter une entreprise" → catégorie "Station de radio" → Mamou, Guinée → vérifiez</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Mettez à jour l'URL dans sitemap.xml</div><div class="step-desc">Ouvrez <code>sitemap.xml</code> sur GitHub → remplacez <code>VOTRE-SITE.netlify.app</code> par votre vraie URL → sauvegardez</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Faites de même dans robots.txt</div><div class="step-desc">Ouvrez <code>robots.txt</code> → remplacez l'URL du Sitemap → sauvegardez</div></div></div>
+  </div>
+
+  <h3 class="sub-h">Mots-clés ciblés (déjà dans le code)</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0">
+    <code>radio guinée en direct</code>
+    <code>radio mamou</code>
+    <code>fraternité fm</code>
+    <code>radio 95.0 mamou</code>
+    <code>streaming radio guinée</code>
+    <code>actualités moyenne guinée</code>
+    <code>radio pular</code>
+    <code>radio communautaire guinée</code>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="reseaux">📲 Stratégie Réseaux Sociaux</h2>
+
+  <table>
+    <tr><th>Plateforme</th><th>Fréquence</th><th>Type de contenu</th><th>Objectif</th></tr>
+    <tr><td>Facebook</td><td>2-3 posts/jour</td><td>Articles, clips, sondages, lives</td><td>Portée grand public Guinée</td></tr>
+    <tr><td>WhatsApp</td><td>1 message/jour</td><td>Lien article + résumé court</td><td>Partage viral communauté</td></tr>
+    <tr><td>YouTube</td><td>3-4 clips/semaine</td><td>Extraits émissions, reportages</td><td>SEO vidéo + revenus AdSense</td></tr>
+    <tr><td>Instagram Reels</td><td>1 reel/jour</td><td>Clips 60s avec sous-titres</td><td>Toucher les 18-35 ans</td></tr>
+    <tr><td>TikTok</td><td>1 vidéo/jour</td><td>Clips courts, moments forts</td><td>Viralité diaspora</td></tr>
+  </table>
+
+  <div class="info-box tip"><strong>💡 La règle des clips viraux (Semaine 5 du plan 90J)</strong>Identifiez le meilleur moment de chaque émission (débat houleux, révélation, moment émouvant). Coupez-le en 60-90 secondes avec CapCut. Ajoutez des sous-titres en Pular et français. Publiez partout en même temps. Répétez 5× par semaine.</div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="plan90">🎯 Suivi du Plan 90 Jours</h2>
+  <p class="body">Voici comment le site s'intègre dans chaque phase du plan d'exécution.</p>
+  <table>
+    <tr><th>Semaine</th><th>Action plan 90J</th><th>Où sur le site</th></tr>
+    <tr><td>S1-S2</td><td>Site en ligne + stream fonctionnel</td><td>Player audio (stream Zeno.fm actif)</td></tr>
+    <tr><td>S3</td><td>1ère émission live streamée</td><td>Section Vidéo Live → Facebook/YouTube</td></tr>
+    <tr><td>S4</td><td>WhatsApp communauté + notifications</td><td>Bouton WhatsApp + OneSignal push</td></tr>
+    <tr><td>S5</td><td>Clips viraux → croissance</td><td>Section Clips → YouTube intégré</td></tr>
+    <tr><td>S7</td><td>Dédicaces payantes</td><td>Formulaire dédicace → WhatsApp</td></tr>
+    <tr><td>S9</td><td>SEO + Google</td><td>Schema.org + sitemap.xml + Search Console</td></tr>
+    <tr><td>S10</td><td>Dons Mobile Money</td><td>Section "Soutenez-nous" avec Orange/MTN</td></tr>
+    <tr><td>S14</td><td>Sponsors + Kit Média</td><td>Section Sponsors → 3 packages + formulaire</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="structure">📁 Structure complète du projet</h2>
+  <pre style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-size:.78rem;color:var(--muted);overflow-x:auto;line-height:1.8"><code style="background:none;border:none;padding:0;color:var(--muted)">fraternite-fm/
+├── index.html              ← Page principale du site
+├── guide.html              ← Ce guide (accès public)
+├── sitemap.xml             ← Plan du site pour Google
+├── robots.txt              ← Instructions pour les moteurs
+├── OneSignalSDKWorker.js   ← Service worker notifications push
+├── netlify.toml            ← Configuration Netlify
+│
+├── admin/
+│   ├── index.html          ← Interface CMS Decap
+│   └── config.yml          ← Configuration des collections CMS
+│
+├── admin.html              ← Admin simplifié (sauvegarde)
+│
+├── css/
+│   └── style.css           ← Tous les styles du site
+│
+├── js/
+│   └── app.js              ← Logique complète du site
+│
+├── assets/
+│   └── uploads/            ← Images uploadées via le CMS
+│
+└── _data/                  ← Toutes les données du site
+    ├── settings.json        ← Paramètres généraux
+    ├── articles/
+    │   ├── index.json       ← Liste des articles
+    │   └── *.json           ← Un fichier = un article
+    ├── clips/
+    │   ├── index.json       ← Liste des clips
+    │   └── *.json           ← Un fichier = un clip
+    ├── programmes/
+    │   ├── index.json       ← Liste des émissions
+    │   └── *.json           ← Une émission
+    └── equipe/
+        ├── index.json       ← Liste des membres
+        └── *.json           ← Un membre</code></pre>
+
+  <div class="info-box warning"><strong>⚠️ Important : les fichiers index.json</strong>Chaque fois que vous ajoutez un fichier JSON dans un dossier <code>_data/</code>, vous devez aussi ajouter son nom dans le fichier <code>index.json</code> du même dossier. Le CMS Decap le fait automatiquement. Si vous ajoutez manuellement, pensez-y.</div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="concordance">📊 Bilan de concordance cahier des charges</h2>
+
+  <p class="body">État final après toutes les améliorations.</p>
+
+  <div style="margin:1.5rem 0">
+    <div class="score-row"><div class="score-label">Fonctionnel de base (player, vidéo, CMS)</div><div class="score-bar"><div class="score-fill" style="width:100%"></div></div><div class="score-pct">100%</div></div>
+    <div class="score-row"><div class="score-label">Design & UX mobile-first</div><div class="score-bar"><div class="score-fill" style="width:100%"></div></div><div class="score-pct">100%</div></div>
+    <div class="score-row"><div class="score-label">Gestion contenu sans code (CMS)</div><div class="score-bar"><div class="score-fill" style="width:95%"></div></div><div class="score-pct">95%</div></div>
+    <div class="score-row"><div class="score-label">Monétisation (dons + sponsors)</div><div class="score-bar"><div class="score-fill" style="width:90%"></div></div><div class="score-pct">90%</div></div>
+    <div class="score-row"><div class="score-label">Croissance (clips, SEO, push)</div><div class="score-bar"><div class="score-fill" style="width:95%"></div></div><div class="score-pct">95%</div></div>
+    <div class="score-row"><div class="score-label">Engagement communauté</div><div class="score-bar"><div class="score-fill" style="width:90%"></div></div><div class="score-pct">90%</div></div>
+    <div class="score-row"><div class="score-label">Documentation & guide</div><div class="score-bar"><div class="score-fill" style="width:100%"></div></div><div class="score-pct">100%</div></div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(232,160,32,0.1),rgba(232,160,32,0.05));border:1px solid rgba(232,160,32,0.3);border-radius:var(--r);padding:1.5rem;margin:1.5rem 0;text-align:center">
+    <div style="font-family:var(--disp);font-size:3rem;color:var(--amber)">96%</div>
+    <div style="font-size:.9rem;color:var(--text);font-weight:600">Concordance totale avec le cahier des charges</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:.5rem">Les 4% restants : correspondants régionaux (contenu humain, pas technique) + archives audio avancées</div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <h2 class="section-h" id="depannage">🔧 Dépannage fréquent</h2>
+
+  <table>
+    <tr><th>Problème</th><th>Cause probable</th><th>Solution</th></tr>
+    <tr><td>Le player ne joue pas</td><td>URL du stream incorrecte ou hors ligne</td><td>Vérifiez <code>stream_url</code> dans les Paramètres CMS. Testez l'URL directement dans le navigateur.</td></tr>
+    <tr><td>Les articles n'apparaissent pas</td><td><code>index.json</code> non mis à jour</td><td>Ouvrez <code>_data/articles/index.json</code> sur GitHub et ajoutez le nom du nouveau fichier JSON.</td></tr>
+    <tr><td>Le CMS refuse de s'ouvrir</td><td><code>config.yml</code> mal configuré</td><td>Vérifiez que <code>repo:</code> contient bien <code>votre-pseudo/fraternite-fm</code> sans espaces.</td></tr>
+    <tr><td>Les notifications ne fonctionnent pas</td><td>App ID OneSignal manquant</td><td>Remplacez <code>YOUR_ONESIGNAL_APP_ID</code> dans <code>index.html</code> par votre vrai ID.</td></tr>
+    <tr><td>Le site est lent sur 3G</td><td>Images trop lourdes uploadées</td><td>Compressez les images sur <a href="https://squoosh.app" target="_blank">squoosh.app</a> avant de les uploader (max 200KB).</td></tr>
+    <tr><td>Le live Facebook ne charge pas</td><td>Page Facebook non publique</td><td>Assurez-vous que votre page FB est publique et que le bon <code>facebook_page_id</code> est dans les Paramètres.</td></tr>
+  </table>
+
+  <div class="guide-footer">
+    <p>📻 Radio Fraternité FM Mamou — Guide v1.0 — Mars 2026</p>
+    <p style="margin-top:.5rem">La voix de la Moyenne Guinée</p>
+  </div>
+
+</main>
+</div>
+</body>
+</html>

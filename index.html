@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="pageTitle">Radio Fraternité FM Mamou 95.0 — En Direct</title>
+  <meta name="description" id="pageDesc" content="Radio Fraternité FM Mamou 95.0 — Streaming en direct, vidéos live et actualités de la Moyenne Guinée. La voix communautaire de Mamou, Guinée."/>
+  <meta property="og:title" content="Radio Fraternité FM Mamou"/>
+  <meta property="og:type" content="website"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- CSS Variables overrides injected by app.js from settings.json -->
+  <style id="settingsStyle"></style>
+
+  <!-- ══ SEO : Schema.org RadioStation (Google Rich Results) ══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RadioStation",
+    "name": "Radio Fraternité FM Mamou",
+    "alternateName": "Fraternité FM 95.0",
+    "url": "https://69bad273c53c18c000e937c9--unrivaled-praline-c7b294.netlify.app",
+    "logo": "https://69bad273c53c18c000e937c9--unrivaled-praline-c7b294.netlify.app/assets/uploads/logo.png",
+    "description": "Radio communautaire de Moyenne Guinée diffusant sur 95.0 MHz depuis Mamou. Informations, culture Pular, musique et streaming en direct.",
+    "broadcastFrequency": {
+      "@type": "BroadcastFrequencySpecification",
+      "broadcastFrequencyValue": "95.0",
+      "broadcastSignalModulation": "FM"
+    },
+    "broadcastAffiliateOf": {
+      "@type": "Organization",
+      "name": "Fraternité FM"
+    },
+    "areaServed": {
+      "@type": "Place",
+      "name": "Moyenne Guinée",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Mamou",
+        "addressCountry": "GN"
+      }
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+224-629-020-259",
+      "contactType": "customer service",
+      "availableLanguage": ["French", "Pular"]
+    },
+    "sameAs": [
+      "https://www.facebook.com/FraterniteFm95Mamou/",
+      "https://www.youtube.com/channel/UCJIFBiOGN3o-gFMPqQhagPA"
+    ]
+  }
+  </script>
+
+  <!-- ══ SEO : Open Graph étendu ══ -->
+  <meta property="og:site_name" content="Radio Fraternité FM Mamou"/>
+  <meta property="og:locale" content="fr_GN"/>
+  <meta property="og:image" content="https://69bad273c53c18c000e937c9--unrivaled-praline-c7b294.netlify.app/assets/uploads/og-image.jpg"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Radio Fraternité FM Mamou 95.0 — En Direct"/>
+  <meta name="twitter:description" content="Radio communautaire de Moyenne Guinée. Streaming en direct, vidéos live, actualités de Mamou."/>
+  <meta name="keywords" content="radio guinée, radio mamou, fraternité fm, moyenne guinée, radio en direct, pular, streaming guinée, radio 95.0"/>
+  <link rel="canonical" href="https://69bad273c53c18c000e937c9--unrivaled-praline-c7b294.netlify.app/"/>
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml"/>
+
+  <!-- ══ ONESIGNAL PUSH NOTIFICATIONS ══ -->
+  <!-- ⚠️ Remplacez YOUR_ONESIGNAL_APP_ID par votre vrai App ID OneSignal -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "YOUR_ONESIGNAL_APP_ID",
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true,
+      });
+    });
+  </script>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- ══ LOADING SCREEN ══════════════════════════════════════════ -->
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-inner">
+    <div class="loading-logo">📻</div>
+    <div class="loading-name">FRATERNITÉ FM</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text">Chargement en cours…</div>
+  </div>
+</div>
+
+
+<!-- ══ NOTIFICATION PROMPT ══════════════════════════════════════ -->
+<div class="notif-banner" id="notifBanner" style="display:none">
+  <div class="notif-content">
+    <span class="notif-icon">🔔</span>
+    <span class="notif-text">Activez les notifications pour savoir quand nous sommes en direct !</span>
+  </div>
+  <div class="notif-actions">
+    <button class="btn-notif-yes" id="btnNotifYes">Activer</button>
+    <button class="btn-notif-no"  id="btnNotifNo">Plus tard</button>
+  </div>
+</div>
+
+<!-- ══ TICKER ══════════════════════════════════════════════════ -->
+<div class="ticker-wrap" id="tickerWrap" style="display:none">
+  <div class="ticker-label">🔴 INFOS</div>
+  <div class="ticker-track">
+    <div class="ticker-content" id="tickerContent"></div>
+  </div>
+</div>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" id="navLogo">
+      <span class="logo-icon" id="logoIcon">📻</span>
+      <img src="" alt="Logo" class="logo-img" id="logoImg" style="display:none"/>
+      <div class="logo-text">
+        <span class="logo-main" id="logoMain">FRATERNITÉ FM</span>
+        <span class="logo-sub" id="logoSub">MAMOU · GUINÉE</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#direct">En Direct</a></li>
+      <li><a href="#video">Vidéo Live</a></li>
+        <li><a href="#clips">Clips</a></li>
+      <li><a href="#programmes">Programmes</a></li>
+      <li><a href="#actualites">Actualités</a></li>
+      <li><a href="#apropos">À Propos</a></li>
+      <li><a href="#equipe">Équipe</a></li>
+      <li><a href="#communaute">Contact</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ HERO ════════════════════════════════════════════════════ -->
+<section class="hero" id="direct">
+  <div class="hero-bg" id="heroBg">
+    <div class="hero-overlay"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content">
+    <div class="live-badge">
+      <span class="live-dot"></span> EN DIRECT · <span id="heroFreq">95.0 MHz</span>
+    </div>
+    <h1 class="hero-title">
+      <span id="heroTitle1">LA VOIX DE</span><br/>
+      <em id="heroTitle2">MOYENNE GUINÉE</em>
+    </h1>
+    <p class="hero-sub" id="heroTagline">Radio communautaire depuis Mamou — Musique, infos, culture Pular</p>
+
+    <!-- PLAYER -->
+    <div class="player-card">
+      <div class="player-visual">
+        <div class="wave-bars" id="waveBars">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="player-info">
+          <div class="player-station" id="playerStation">Fraternité FM — 95.0 MHz</div>
+          <div class="player-now" id="playerNow">Cliquez ▶ pour écouter</div>
+        </div>
+      </div>
+      <div class="player-controls">
+        <button class="btn-play" id="btnPlay" aria-label="Écouter / Pause">
+          <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="3" width="4" height="18"/><rect x="14" y="3" width="4" height="18"/></svg>
+        </button>
+        <div class="volume-wrap">
+          <span class="vol-icon">🔊</span>
+          <input type="range" id="volume" class="volume-slider" min="0" max="1" step="0.05" value="0.8"/>
+        </div>
+      </div>
+      <audio id="radioAudio" preload="none">
+        <source id="audioSource" src="https://stream.zeno.fm/z951m76tyc9uv" type="audio/mpeg"/>
+      </audio>
+    </div>
+
+    <div class="hero-stats" id="heroStats">
+      <div class="stat"><span class="stat-num" id="stat1Val" data-target="95">0</span><span class="stat-lbl" id="stat1Lbl">MHz FM</span></div>
+      <div class="stat"><span class="stat-num" id="stat2Val" data-target="24">0</span><span class="stat-lbl" id="stat2Lbl">H / Jour</span></div>
+      <div class="stat"><span class="stat-num" id="stat3Val" data-target="7">0</span><span class="stat-lbl" id="stat3Lbl">Régions</span></div>
+    </div>
+  </div>
+  <a href="#video" class="scroll-hint" aria-label="Défiler vers le bas">
+    <span class="scroll-arrow">↓</span>
+  </a>
+</section>
+
+<!-- ══ VIDÉO LIVE ═══════════════════════════════════════════════ -->
+<section class="section video-section" id="video">
+  <div class="section-label">DIFFUSION VIDÉO</div>
+  <h2 class="section-title">Regardez <em>en direct</em></h2>
+  <p class="section-desc">Suivez nos émissions en vidéo live depuis le studio de Mamou</p>
+  <div class="video-tabs">
+    <button class="vtab active" data-tab="facebook">📘 Facebook Live</button>
+    <button class="vtab" data-tab="youtube">▶ YouTube Live</button>
+  </div>
+  <div class="video-container">
+    <div class="video-pane active" id="tab-facebook">
+      <div class="fb-video-wrap">
+        <iframe id="fbFrame"
+          src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FFraterniteFm95Mamou%2Fvideos%2F&show_text=false&autoplay=0"
+          allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          title="Facebook Live Fraternité FM"></iframe>
+        <div class="video-overlay" id="fbOverlay">
+          <div class="overlay-inner">
+            <div class="overlay-icon">▶</div>
+            <p>Cliquez pour regarder le live Facebook</p>
+            <button class="btn-load-video" id="loadFb">Regarder maintenant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="video-pane" id="tab-youtube">
+      <div class="fb-video-wrap">
+        <iframe id="ytFrame" src="about:blank"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCJIFBiOGN3o-gFMPqQhagPA&autoplay=0"
+          allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          title="YouTube Live Fraternité FM"></iframe>
+        <div class="video-overlay" id="ytOverlay">
+          <div class="overlay-inner">
+            <div class="overlay-icon">▶</div>
+            <p>Cliquez pour regarder le live YouTube</p>
+            <button class="btn-load-video" id="loadYt">Regarder maintenant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CLIPS VIDÉO ══════════════════════════════════════════════ -->
+<section class="section clips-section" id="clips">
+  <div class="section-label">CLIPS &amp; REPLAYS</div>
+  <h2 class="section-title">Nos <em>meilleurs moments</em></h2>
+  <p class="section-desc">Retrouvez les extraits de vos émissions préférées, partagez-les et ne manquez plus rien</p>
+  <div class="clips-grid" id="clipsGrid"></div>
+  <div class="clips-more">
+    <a id="clipsYtLink" href="https://www.youtube.com/channel/UCJIFBiOGN3o-gFMPqQhagPA" target="_blank" rel="noopener" class="btn-clips-more">
+      ▶ Voir tous nos clips sur YouTube
+    </a>
+  </div>
+</section>
+
+<!-- ══ PROGRAMMES ══════════════════════════════════════════════ -->
+<section class="section programmes-section" id="programmes">
+  <div class="section-label">GRILLE DES ÉMISSIONS</div>
+  <h2 class="section-title">Nos <em>Programmes</em></h2>
+  <p class="section-desc">Retrouvez vos émissions préférées chaque semaine</p>
+  <div class="prog-grid" id="progGrid"></div>
+</section>
+
+<!-- ══ ACTUALITÉS ══════════════════════════════════════════════ -->
+<section class="section news-section" id="actualites">
+  <div class="section-label">ACTUALITÉS</div>
+  <h2 class="section-title">Dernières <em>nouvelles</em></h2>
+  <p class="section-desc">Mamou, Moyenne Guinée et au-delà</p>
+  <div class="news-grid" id="newsGrid"></div>
+</section>
+
+<!-- ══ À PROPOS ════════════════════════════════════════════════ -->
+<section class="apropos-section" id="apropos">
+  <div class="apropos-inner">
+    <div class="apropos-text">
+      <div class="section-label">QUI SOMMES-NOUS</div>
+      <h2 class="section-title">À propos de<br/><em>Fraternité FM</em></h2>
+      <p id="aproposTexte">Radio Fraternité FM est une radio communautaire basée à Mamou, au cœur de la Moyenne Guinée.</p>
+      <div class="apropos-badges">
+        <div class="apropos-badge"><span>📻</span><span id="aproposMHz">95.0 MHz</span></div>
+        <div class="apropos-badge"><span>🕐</span><span>24h/24 — 7j/7</span></div>
+        <div class="apropos-badge"><span>🌍</span><span>Streaming mondial</span></div>
+        <div class="apropos-badge"><span>🤝</span><span>Radio communautaire</span></div>
+      </div>
+    </div>
+    <div class="apropos-visual">
+      <div class="apropos-card">
+        <div class="apropos-wave">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="apropos-freq" id="aproposFreq">95.0 MHz</div>
+        <div class="apropos-name" id="aproposName">FRATERNITÉ FM</div>
+        <div class="apropos-loc">MAMOU · GUINÉE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ÉQUIPE ══════════════════════════════════════════════════ -->
+<section class="section team-section" id="equipe">
+  <div class="section-label">NOTRE ÉQUIPE</div>
+  <h2 class="section-title">Les visages de <em>Fraternité FM</em></h2>
+  <p class="section-desc">Des professionnels engagés au service de la Moyenne Guinée</p>
+  <div class="team-grid" id="teamGrid"></div>
+</section>
+
+
+<!-- ══ DONS MOBILE MONEY ════════════════════════════════════════ -->
+<section class="section dons-section" id="dons">
+  <div class="section-label">SOUTENEZ VOTRE RADIO</div>
+  <h2 class="section-title">Aidez-nous à <em>grandir</em></h2>
+  <p class="section-desc">Fraternité FM est votre radio communautaire. Chaque contribution nous aide à améliorer nos programmes et notre signal.</p>
+  <div class="dons-grid">
+
+    <div class="don-card featured">
+      <div class="don-card-header">
+        <span class="don-icon">📱</span>
+        <div><div class="don-title">Mobile Money</div><div class="don-sub">Rapide et simple depuis votre téléphone</div></div>
+      </div>
+      <div class="mm-options">
+        <div class="mm-item orange">
+          <div class="mm-logo">🟠</div>
+          <div class="mm-info">
+            <div class="mm-name">Orange Money</div>
+            <div class="mm-num">+224 629 020 259</div>
+          </div>
+          <button class="btn-copy-num" onclick="copyNum(this,'224629020259','Orange Money')">Copier</button>
+        </div>
+        <div class="mm-item mtn">
+          <div class="mm-logo">🟡</div>
+          <div class="mm-info">
+            <div class="mm-name">MTN Mobile Money</div>
+            <div class="mm-num">+224 629 020 259</div>
+          </div>
+          <button class="btn-copy-num" onclick="copyNum(this,'224629020259','MTN MoMo')">Copier</button>
+        </div>
+      </div>
+      <div class="mm-instructions">
+        <strong>Comment faire un don :</strong> Composez *144# (Orange) ou *880# (MTN) → Transfert → saisissez le numéro → entrez le montant → confirmez.
+      </div>
+    </div>
+
+    <div class="don-card">
+      <div class="don-card-header">
+        <span class="don-icon">🎯</span>
+        <div><div class="don-title">Montants suggérés</div><div class="don-sub">Chaque franc compte pour notre radio</div></div>
+      </div>
+      <div class="don-amounts">
+        <div class="don-amount" onclick="selectAmount(this,'5000')"><span class="don-amt-val">5.000 GNF</span><span class="don-amt-lbl">Auditeur</span></div>
+        <div class="don-amount" onclick="selectAmount(this,'20000')"><span class="don-amt-val">20.000 GNF</span><span class="don-amt-lbl">Soutien</span></div>
+        <div class="don-amount featured-amt" onclick="selectAmount(this,'50000')"><span class="don-amt-val">50.000 GNF</span><span class="don-amt-lbl">Ami ⭐</span></div>
+        <div class="don-amount" onclick="selectAmount(this,'100000')"><span class="don-amt-val">100.000 GNF</span><span class="don-amt-lbl">Ambassadeur</span></div>
+      </div>
+      <button class="btn-don-wa" id="btnDonWa">💬 Envoyer mon don par WhatsApp</button>
+      <div class="don-note">Votre nom sera lu à l'antenne en remerciement 🎙️</div>
+    </div>
+
+    <div class="don-card goal-card">
+      <div class="don-card-header">
+        <span class="don-icon">🏆</span>
+        <div><div class="don-title">Objectif du mois</div><div class="don-sub">Nouveau matériel studio</div></div>
+      </div>
+      <div class="goal-progress-wrap">
+        <div class="goal-bar"><div class="goal-fill" id="goalFill" style="width:35%"></div></div>
+        <div class="goal-nums"><span>175.000 GNF</span><span>500.000 GNF</span></div>
+      </div>
+      <div class="goal-pct">35% atteint</div>
+      <div class="amb-title" style="margin-top:1.25rem;font-size:.75rem;font-weight:700;letter-spacing:1px;color:var(--amber);text-transform:uppercase">💛 Derniers donateurs</div>
+      <div class="amb-list">
+        <span class="amb-tag">Mamadou B. — 20.000 GNF</span>
+        <span class="amb-tag">Fatoumata D. — 10.000 GNF</span>
+        <span class="amb-tag">Ibrahima S. — 50.000 GNF</span>
+        <span class="amb-tag">Aissatou K. — 5.000 GNF</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ SPONSORS ════════════════════════════════════════════════ -->
+<section class="sponsors-section" id="sponsors">
+  <div class="sponsors-inner">
+    <div class="sponsors-text">
+      <div class="section-label">PARTENAIRES &amp; PUBLICITÉ</div>
+      <h2 class="section-title">Touchez <em>la Moyenne Guinée</em></h2>
+      <p>Fraternité FM diffuse sur 95.0 MHz à Mamou et en streaming mondial. Rejoignez nos partenaires et faites connaître votre entreprise à des milliers d'auditeurs.</p>
+      <div class="sponsor-packages">
+        <div class="pkg-card">
+          <div class="pkg-name">🥉 Bronze</div>
+          <div class="pkg-price">50.000 <span>GNF / sem.</span></div>
+          <ul class="pkg-features">
+            <li>✅ Annonce 30 sec (3×/jour)</li>
+            <li>✅ Mention journal radio</li>
+            <li>✅ Rapport hebdomadaire</li>
+          </ul>
+        </div>
+        <div class="pkg-card featured-pkg">
+          <div class="pkg-badge">POPULAIRE</div>
+          <div class="pkg-name">🥈 Silver</div>
+          <div class="pkg-price">150.000 <span>GNF / sem.</span></div>
+          <ul class="pkg-features">
+            <li>✅ Tout du Bronze</li>
+            <li>✅ Post sponsorisé Facebook</li>
+            <li>✅ Logo sur le site web</li>
+            <li>✅ Annonce sur YouTube Live</li>
+          </ul>
+        </div>
+        <div class="pkg-card">
+          <div class="pkg-name">🥇 Gold</div>
+          <div class="pkg-price">400.000 <span>GNF / sem.</span></div>
+          <ul class="pkg-features">
+            <li>✅ Tout du Silver</li>
+            <li>✅ Émission co-brandée 1×/sem</li>
+            <li>✅ Bannière site 7 jours</li>
+            <li>✅ Interview à l'antenne</li>
+            <li>✅ Rapport analytique complet</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sponsors-form">
+      <h3>📋 Demande de partenariat</h3>
+      <form id="sponsorForm" class="form-ded">
+        <input type="text" name="entreprise" placeholder="Nom de votre entreprise *" required/>
+        <input type="text" name="contact"    placeholder="Votre nom et prénom *" required/>
+        <input type="tel"  name="telephone"  placeholder="Numéro de téléphone *" required/>
+        <select name="pack" required>
+          <option value="" disabled selected>Choisissez un package…</option>
+          <option>🥉 Bronze — 50.000 GNF/semaine</option>
+          <option>🥈 Silver — 150.000 GNF/semaine</option>
+          <option>🥇 Gold — 400.000 GNF/semaine</option>
+          <option>📐 Offre sur mesure</option>
+        </select>
+        <textarea name="message" placeholder="Décrivez votre activité et vos objectifs…" rows="3"></textarea>
+        <button type="submit" class="btn-submit">Envoyer la demande 🤝</button>
+      </form>
+      <div class="form-success" id="sponsorSuccess" style="display:none">✅ Demande envoyée ! Notre équipe vous contacte sous 24h.</div>
+      <div class="sponsors-reassurance">
+        <span>🔒 Confidentiel</span>
+        <span>⚡ Réponse sous 24h</span>
+        <span>📊 Rapport d'audience fourni</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMMUNAUTÉ + DÉDICACE ═══════════════════════════════════ -->
+<section class="community-section" id="communaute">
+  <div class="comm-inner">
+    <div class="comm-text">
+      <div class="section-label">REJOIGNEZ-NOUS</div>
+      <h2 class="section-title">La communauté<br/><em>Fraternité FM</em></h2>
+      <p>Rejoignez des milliers d'auditeurs sur WhatsApp, Facebook et YouTube. Partagez l'actualité, demandez vos dédicaces et participez à nos émissions en direct.</p>
+      <div class="social-links" id="socialLinks">
+        <a id="btnFb" href="https://www.facebook.com/FraterniteFm95Mamou/" class="social-btn fb" target="_blank" rel="noopener"><span>f</span> Facebook</a>
+        <a id="btnWa" href="https://wa.me/224629020259?text=Bonjour+Fraternité+FM" class="social-btn wa" target="_blank" rel="noopener"><span>💬</span> WhatsApp</a>
+        <a id="btnYt" href="https://www.youtube.com/channel/UCJIFBiOGN3o-gFMPqQhagPA" class="social-btn yt" target="_blank" rel="noopener"><span>▶</span> YouTube</a>
+      </div>
+    </div>
+    <div class="comm-form">
+      <h3>🎵 Envoyez une dédicace</h3>
+      <form id="dedicaceForm" class="form-ded">
+        <input type="text" placeholder="Votre prénom" name="prenom" required/>
+        <input type="text" placeholder="Dédier à…" name="destinataire" required/>
+        <input type="text" placeholder="Chanson / artiste souhaité"/>
+        <textarea placeholder="Votre message (facultatif)" name="message" rows="3"></textarea>
+        <button type="submit" class="btn-submit">Envoyer la dédicace</button>
+      </form>
+      <div class="form-success" id="formSuccess" style="display:none">
+        ✅ Dédicace envoyée ! Elle sera lue à l'antenne.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-icon" id="footerLogoIcon">📻</span>
+        <img src="" alt="Logo" class="logo-img footer-logo-img" id="footerLogoImg" style="display:none"/>
+        <div>
+          <div class="footer-name" id="footerName">Radio Fraternité FM Mamou</div>
+          <div class="footer-tagline" id="footerTagline">La radio de la Moyenne Guinée</div>
+          <div class="footer-freq-badge" id="footerFreq">📡 95.0 MHz — Mamou, Guinée</div>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Navigation</div>
+          <a href="#direct">En Direct</a>
+          <a href="#video">Vidéo Live</a>
+          <a href="#clips">Clips</a>
+          <a href="#programmes">Programmes</a>
+          <a href="#actualites">Actualités</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Radio</div>
+          <a href="#apropos">À Propos</a>
+          <a href="#equipe">Équipe</a>
+          <a href="#dons">Faire un don</a>
+          <a href="#sponsors">Devenir sponsor</a>
+          <a href="#communaute">Contact</a>
+          <a href="admin/" target="_blank">Admin ↗</a>
+          <a href="guide.html" target="_blank">Guide ↗</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Suivez-nous</div>
+          <a id="footerFb" href="https://www.facebook.com/FraterniteFm95Mamou/" target="_blank" rel="noopener">Facebook</a>
+          <a id="footerWa" href="https://wa.me/224629020259" target="_blank" rel="noopener">WhatsApp</a>
+          <a id="footerYt" href="https://www.youtube.com/channel/UCJIFBiOGN3o-gFMPqQhagPA" target="_blank" rel="noopener">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Radio Fraternité FM Mamou — Tous droits réservés</span>
+      <span id="footerBottomText">La radio de la Moyenne Guinée</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ MINI PLAYER ═════════════════════════════════════════════ -->
+<div class="mini-player" id="miniPlayer">
+  <div class="mini-left">
+    <div class="mini-wave" id="miniWave">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="mini-info">
+      <span class="mini-name" id="miniName">Fraternité FM</span>
+      <span class="mini-freq" id="miniFreq">95.0 MHz · Mamou</span>
+    </div>
+  </div>
+  <button class="mini-play" id="miniBtnPlay" aria-label="Lecture / Pause">
+    <svg id="miniIconPlay" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+    <svg id="miniIconPause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="3" width="4" height="18"/><rect x="14" y="3" width="4" height="18"/></svg>
+  </button>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

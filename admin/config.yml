@@ -1,0 +1,375 @@
+backend:
+  name: github
+  repo: diallosadou750/fraternite-fm
+  branch: main
+  base_url: https://sveltia-cms-auth.netlify.app
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+locale: fr
+
+collections:
+
+  # ── PARAMÈTRES GÉNÉRAUX ───────────────────────────────────────
+  - name: "parametres"
+    label: "⚙️ Paramètres du site"
+    files:
+      - name: "settings"
+        label: "Configuration générale"
+        file: "_data/settings.json"
+        fields:
+
+          - label: "━━ IDENTITÉ"
+            name: "sep_identite"
+            widget: "hidden"
+            default: ""
+
+          - label: "Nom de la radio"
+            name: "site_nom"
+            widget: "string"
+            default: "Radio Fraternité FM Mamou"
+
+          - label: "Slogan (sous le titre)"
+            name: "site_slogan"
+            widget: "string"
+            default: "La voix de la Moyenne Guinée"
+
+          - label: "Tagline (description courte)"
+            name: "site_tagline"
+            widget: "string"
+            default: "Radio communautaire depuis Mamou — Musique, infos, culture Pular"
+
+          - label: "Fréquence FM (ex: 95.0)"
+            name: "frequence"
+            widget: "string"
+            default: "95.0"
+
+          - label: "━━ HERO (PAGE D'ACCUEIL)"
+            name: "sep_hero"
+            widget: "hidden"
+            default: ""
+
+          - label: "Titre ligne 1 du héros"
+            name: "hero_titre_1"
+            widget: "string"
+            default: "LA VOIX DE"
+            hint: "Texte en gros en haut. Ex: LA VOIX DE"
+
+          - label: "Titre ligne 2 du héros (italique doré)"
+            name: "hero_titre_2"
+            widget: "string"
+            default: "MOYENNE GUINÉE"
+            hint: "Texte en italique doré. Ex: MOYENNE GUINÉE"
+
+          - label: "━━ LOGO & VISUELS"
+            name: "sep_visuels"
+            widget: "hidden"
+            default: ""
+
+          - label: "Logo (image)"
+            name: "logo_url"
+            widget: "image"
+            required: false
+            hint: "Uploadez votre logo (PNG transparent recommandé, max 200px de haut). Si vide, l'icône 📻 sera utilisée."
+
+          - label: "Image de fond du héros"
+            name: "hero_bg_image"
+            widget: "image"
+            required: false
+            hint: "Image de fond pour la section principale. Recommandé : photo du studio ou de Mamou. Dimensions : 1920x1080px minimum."
+
+          - label: "━━ COULEURS"
+            name: "sep_couleurs"
+            widget: "hidden"
+            default: ""
+
+          - label: "Couleur principale (boutons, titres, accents)"
+            name: "couleur_accent"
+            widget: "color"
+            default: "#e8a020"
+            hint: "Couleur dorée par défaut. Vous pouvez choisir une autre couleur."
+
+          - label: "Couleur secondaire (fonds, gradients)"
+            name: "couleur_secondaire"
+            widget: "color"
+            default: "#1a3a5c"
+            hint: "Bleu marine par défaut. Utilisé pour les arrière-plans de la navbar et gradients."
+
+          - label: "━━ AUDIO & VIDÉO"
+            name: "sep_media"
+            widget: "hidden"
+            default: ""
+
+          - label: "URL du stream audio"
+            name: "stream_url"
+            widget: "string"
+            default: "https://stream.zeno.fm/z951m76tyc9uv"
+            hint: "URL de votre flux Icecast, Shoutcast ou Zeno.fm"
+
+          - label: "ID chaîne YouTube"
+            name: "youtube_channel_id"
+            widget: "string"
+            default: "UCJIFBiOGN3o-gFMPqQhagPA"
+
+          - label: "━━ RÉSEAUX SOCIAUX"
+            name: "sep_reseaux"
+            widget: "hidden"
+            default: ""
+
+          - label: "Lien page Facebook"
+            name: "facebook_url"
+            widget: "string"
+            default: "https://www.facebook.com/FraterniteFm95Mamou/"
+
+          - label: "Nom de page Facebook (sans https://facebook.com/)"
+            name: "facebook_page_id"
+            widget: "string"
+            default: "FraterniteFm95Mamou"
+            hint: "Utilisé pour intégrer les vidéos live Facebook"
+
+          - label: "Numéro WhatsApp (format international sans +)"
+            name: "whatsapp_numero"
+            widget: "string"
+            default: "224629020259"
+            hint: "Ex: 224629020259 pour +224 629 020 259"
+
+          - label: "Lien Instagram"
+            name: "instagram_url"
+            widget: "string"
+            required: false
+            default: ""
+
+          - label: "Lien TikTok"
+            name: "tiktok_url"
+            widget: "string"
+            required: false
+            default: ""
+
+          - label: "━━ STATISTIQUES HÉROS"
+            name: "sep_stats"
+            widget: "hidden"
+            default: ""
+
+          - label: "Stat 1 — Valeur"
+            name: "stat_1_val"
+            widget: "string"
+            default: "95"
+
+          - label: "Stat 1 — Label"
+            name: "stat_1_lbl"
+            widget: "string"
+            default: "MHz FM"
+
+          - label: "Stat 2 — Valeur"
+            name: "stat_2_val"
+            widget: "string"
+            default: "24"
+
+          - label: "Stat 2 — Label"
+            name: "stat_2_lbl"
+            widget: "string"
+            default: "H / Jour"
+
+          - label: "Stat 3 — Valeur"
+            name: "stat_3_val"
+            widget: "string"
+            default: "7"
+
+          - label: "Stat 3 — Label"
+            name: "stat_3_lbl"
+            widget: "string"
+            default: "Régions"
+
+          - label: "━━ BANDEAU DÉFILANT"
+            name: "sep_ticker"
+            widget: "hidden"
+            default: ""
+
+          - label: "Activer le bandeau défilant"
+            name: "ticker_actif"
+            widget: "boolean"
+            default: true
+
+          - label: "Messages du bandeau (séparés par |)"
+            name: "ticker_messages"
+            widget: "text"
+            hint: "Séparez chaque message par le symbole |. Ex: Message 1 | Message 2 | Message 3"
+            default: "🔴 EN DIRECT : Fraternité FM, votre radio | 📻 95.0 MHz à Mamou | 💬 Dédicaces au +224 629 020 259"
+
+          - label: "━━ À PROPOS"
+            name: "sep_apropos"
+            widget: "hidden"
+            default: ""
+
+          - label: "Texte À propos"
+            name: "apropos_texte"
+            widget: "text"
+            hint: "Texte de présentation de la radio affiché dans la section À propos."
+
+
+          - label: "━━ DONS MOBILE MONEY"
+            name: "sep_dons"
+            widget: "hidden"
+            default: ""
+
+          - label: "Numéro Orange Money / MTN (pour les dons)"
+            name: "whatsapp_don_numero"
+            widget: "string"
+            default: "224629020259"
+            hint: "Numéro affiché dans la section dons (format sans +)"
+
+          - label: "Label objectif du mois"
+            name: "don_objectif_label"
+            widget: "string"
+            default: "Nouveau matériel studio"
+
+          - label: "Montant objectif (en GNF, sans espaces)"
+            name: "don_objectif_montant"
+            widget: "string"
+            default: "500000"
+
+          - label: "Montant actuel collecté (en GNF, sans espaces)"
+            name: "don_collecte_actuel"
+            widget: "string"
+            default: "0"
+            hint: "Mettez à jour manuellement chaque semaine"
+
+          - label: "━━ URL DU SITE"
+            name: "sep_siteurl"
+            widget: "hidden"
+            default: ""
+
+          - label: "URL complète du site (pour le SEO)"
+            name: "site_url"
+            widget: "string"
+            default: "https://VOTRE-SITE.netlify.app"
+            hint: "Ex: https://fraternitefm.netlify.app — utilisé pour le sitemap et schema.org"
+
+          - label: "━━ FOOTER"
+            name: "sep_footer"
+            widget: "hidden"
+            default: ""
+
+          - label: "Texte du footer"
+            name: "footer_texte"
+            widget: "string"
+            default: "La radio de la Moyenne Guinée — Mamou, Dalaba, Pita, Labé et au-delà."
+
+  # ── ARTICLES ────────────────────────────────────────────────
+  - name: "articles"
+    label: "📰 Articles & Actualités"
+    label_singular: "Article"
+    folder: "_data/articles"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{emoji}} {{title}} — {{date}}"
+    sortable_fields: ["date", "title", "categorie"]
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - label: "Catégorie"
+        name: "categorie"
+        widget: "select"
+        options: ["Actualités","Politique","Économie","Culture","Sport","Santé","Éducation","Agriculture","Société","Communauté","International"]
+      - { label: "Date", name: "date", widget: "datetime", format: "DD MMMM YYYY", date_format: "DD MMMM YYYY", time_format: false }
+      - label: "Icône"
+        name: "emoji"
+        widget: "select"
+        default: "📰"
+        options:
+          - {label:"📰 Général", value:"📰"} 
+          - {label:"🎵 Culture/Musique", value:"🎵"}
+          - {label:"⚽ Sport", value:"⚽"}
+          - {label:"💉 Santé", value:"💉"}
+          - {label:"🏫 Éducation", value:"🏫"}
+          - {label:"📈 Économie", value:"📈"}
+          - {label:"🌍 International", value:"🌍"}
+          - {label:"🏛️ Politique", value:"🏛️"}
+          - {label:"🌱 Agriculture", value:"🌱"}
+          - {label:"💧 Eau/Environnement", value:"💧"}
+          - {label:"🤝 Communauté", value:"🤝"}
+          - {label:"🎓 Formation", value:"🎓"}
+          - {label:"🏗️ Infrastructure", value:"🏗️"}
+          - {label:"🏆 Succès/Prix", value:"🏆"}
+          - {label:"🎉 Événement", value:"🎉"}
+      - { label: "Résumé (affiché en page d'accueil)", name: "excerpt", widget: "text" }
+      - { label: "Article complet (facultatif)", name: "body", widget: "markdown", required: false }
+
+  # ── PROGRAMMES ────────────────────────────────────────────────
+  - name: "programmes"
+    label: "📅 Grille des Programmes"
+    label_singular: "Émission"
+    folder: "_data/programmes"
+    create: true
+    slug: "{{ordre}}-{{slug}}"
+    summary: "{{heure_debut}} – {{heure_fin}} : {{nom_emission}}"
+    fields:
+      - { label: "Nom de l'émission", name: "nom_emission", widget: "string" }
+      - { label: "Heure de début (ex: 06:00)", name: "heure_debut", widget: "string" }
+      - { label: "Heure de fin (ex: 08:00)", name: "heure_fin", widget: "string" }
+      - { label: "Animateur / Animatrice", name: "animateur", widget: "string" }
+      - label: "Catégorie"
+        name: "tag"
+        widget: "select"
+        options: ["Matinale","Information","Musique","Culture Pular","Politique","Magazine","Religion","Débat","Jeunesse","Sport"]
+      - { label: "Diffusé en vidéo live ?", name: "live_video", widget: "boolean", default: false }
+      - { label: "Ordre d'affichage (1 = premier)", name: "ordre", widget: "number", default: 1 }
+
+  # ── ÉQUIPE ────────────────────────────────────────────────────
+  - name: "equipe"
+    label: "👥 Équipe"
+    label_singular: "Membre"
+    folder: "_data/equipe"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{nom}} — {{poste}}"
+    fields:
+      - { label: "Nom complet", name: "nom", widget: "string" }
+      - { label: "Poste / Fonction", name: "poste", widget: "string" }
+      - { label: "Initiales (1 à 3 lettres)", name: "initiales", widget: "string" }
+      - label: "Couleur de l'avatar"
+        name: "couleur"
+        widget: "color"
+        default: "#e8a020"
+      - { label: "Photo (facultatif)", name: "photo", widget: "image", required: false }
+      - { label: "Ordre d'affichage", name: "ordre", widget: "number", default: 1 }
+      - { label: "Biographie", name: "bio", widget: "text" }
+
+  # ── CLIPS VIDÉO ───────────────────────────────────────────────
+  - name: "clips"
+    label: "🎬 Clips & Replays"
+    label_singular: "Clip"
+    folder: "_data/clips"
+    create: true
+    slug: "clip-{{ordre}}-{{slug}}"
+    summary: "{{emoji}} {{titre}} ({{duree}})"
+    fields:
+      - { label: "Titre du clip", name: "titre", widget: "string" }
+      - label: "Catégorie"
+        name: "categorie"
+        widget: "select"
+        options: ["Information","Politique","Culture","Économie","Sport","Société","Débat","Magazine"]
+      - { label: "Date", name: "date", widget: "datetime", format: "DD MMMM YYYY", date_format: "DD MMMM YYYY", time_format: false }
+      - { label: "Durée (ex: 2:45)", name: "duree", widget: "string", required: false }
+      - label: "Icône"
+        name: "emoji"
+        widget: "select"
+        default: "📹"
+        options:
+          - {label:"📹 Vidéo générale", value:"📹"}
+          - {label:"📰 Information", value:"📰"}
+          - {label:"🎵 Culture/Musique", value:"🎵"}
+          - {label:"⚽ Sport", value:"⚽"}
+          - {label:"💉 Santé", value:"💉"}
+          - {label:"📈 Économie", value:"📈"}
+          - {label:"💧 Eau/Environnement", value:"💧"}
+          - {label:"🏛️ Politique", value:"🏛️"}
+          - {label:"🤝 Communauté", value:"🤝"}
+          - {label:"🎉 Événement", value:"🎉"}
+      - label: "ID YouTube (facultatif)"
+        name: "youtube_id"
+        widget: "string"
+        required: false
+        hint: "L'ID se trouve dans l'URL YouTube après 'v='. Ex: pour https://youtube.com/watch?v=dQw4w9WgXcQ → entrez dQw4w9WgXcQ"
+      - { label: "Description courte", name: "description", widget: "text" }
+      - { label: "Ordre d'affichage (1 = premier)", name: "ordre", widget: "number", default: 1 }
+
